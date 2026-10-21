@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Prefer the release binary from a cargo build; fall back to debug if needed
 XPPIPE_BIN="./target/release/xpipe"
+if [[ ! -x "$XPPIPE_BIN" ]]; then
+    XPPIPE_BIN="./target/debug/xpipe"
+fi
+
 ACTION="${1:-}"
 INPUT_FILE="${2:-}"
 OUTPUT_FILE="${3:-}"
@@ -9,6 +14,9 @@ KEY_FILE="${4:-}"
 
 usage() {
     echo "Usage: $0 [encrypt|decrypt] <input_file> <output_file> <key_file>"
+    echo
+    echo "  encrypt  – XOR input with a (generated or existing) keystream"
+    echo "  decrypt  – XOR ciphertext with the same keystream (same operation)"
     exit 1
 }
 
@@ -17,14 +25,15 @@ if [[ $# -lt 4 ]]; then
 fi
 
 if [[ ! -x "$XPPIPE_BIN" ]]; then
-    echo "Error: xpipe binary not found at $XPPIPE_BIN. Run 'cargo build --release' first."
+    echo "Error: xpipe binary not found at $XPPIPE_BIN."
+    echo "Run 'cargo build --release' first."
     exit 1
 fi
 
 case "$ACTION" in
     encrypt|decrypt)
         echo "[*] Starting $ACTION process..."
-        
+
         if [[ "$ACTION" == "encrypt" && ! -f "$KEY_FILE" ]]; then
             echo "[*] Generating random keystream..."
             KEY_SIZE=$(wc -c < "$INPUT_FILE" | tr -d ' ')

@@ -8,9 +8,9 @@
 //!   Left vertical pipe (ingress) → Torus ring buffer → Right vertical pipe (egress)
 //!
 //! Usage examples:
-//!   cargo run -- < input.bin > output.bin
-//!   cargo run -- --capacity 512 --mask 0xA5 --mode split < input.bin
-//!   echo "hello" | cargo run -- --mode split | xxd
+//!   cargo run --bin rustypipes -- < input.bin > output.bin
+//!   cargo run --bin rustypipes -- --capacity 512 --mask 0xA5 --mode split < input.bin
+//!   echo "hello" | cargo run --bin rustypipes -- --mode split | xxd
 
 use std::env;
 use std::io::{self, Read, Write};
@@ -73,7 +73,10 @@ impl Config {
                     if let Some(val) = args.get(i + 1) {
                         let cleaned = val.trim_start_matches("0x").trim_start_matches("0X");
                         mask = u8::from_str_radix(cleaned, 16).unwrap_or_else(|_| {
-                            eprintln!("error: invalid mask value '{}' (expected hex, e.g. 0x5A)", val);
+                            eprintln!(
+                                "error: invalid mask value '{}' (expected hex, e.g. 0x5A)",
+                                val
+                            );
                             process::exit(1);
                         });
                         i += 2;
@@ -88,7 +91,10 @@ impl Config {
                             "standard" => Mode::Standard,
                             "split" => Mode::Split,
                             other => {
-                                eprintln!("error: unknown mode '{}' (expected 'standard' or 'split')", other);
+                                eprintln!(
+                                    "error: unknown mode '{}' (expected 'standard' or 'split')",
+                                    other
+                                );
                                 process::exit(1);
                             }
                         };

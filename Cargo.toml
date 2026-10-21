@@ -1,7 +1,28 @@
 [package]
-name = "xpipe"
+name = "rusty-pipes"
 version = "0.1.0"
 edition = "2021"
+authors = ["Alex Fox"]
+description = "Metaphor-driven concurrent byte-stream processors (pipes, transistors, diodes, XOR cross-pipes)"
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/alexanderdfox/Rusty-Pipes"
+
+[[bin]]
+name = "xpipe"
+path = "src/main.rs"
+
+[[bin]]
+name = "rustypipes"
+path = "bins/rustypipes.rs"
+
+[[bin]]
+name = "transistor"
+path = "bins/transistor.rs"
+
+[[bin]]
+name = "diode"
+path = "bins/diode.rs"
 
 [dependencies]
 clap = { version = "4.4", features = ["derive"] }

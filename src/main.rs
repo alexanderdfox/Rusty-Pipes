@@ -47,7 +47,7 @@ fn main() {
 fn run() -> io::Result<()> {
     let args = Args::parse();
 
-    let (tx, rx): (SyncSender<StreamMessage>, Receiver<StreamMessage>) = 
+    let (tx, rx): (SyncSender<StreamMessage>, Receiver<StreamMessage>) =
         mpsc::sync_channel(args.buffer_size);
 
     // --- 1. Initialize West Input (Binary Stream) ---
@@ -64,7 +64,10 @@ fn run() -> io::Result<()> {
             match reader.read(&mut buf) {
                 Ok(0) => break,
                 Ok(n) => {
-                    if tx_west.send(StreamMessage::WestData(buf[..n].to_vec())).is_err() {
+                    if tx_west
+                        .send(StreamMessage::WestData(buf[..n].to_vec()))
+                        .is_err()
+                    {
                         break;
                     }
                 }
@@ -77,7 +80,7 @@ fn run() -> io::Result<()> {
     let tx_north = tx.clone();
     let north_handle = if let Some(path) = args.north {
         let north_file = File::open(path)?;
-        
+
         Some(thread::spawn(move || {
             let mut reader = north_file;
             let mut buf = vec![0u8; 4096];
@@ -85,7 +88,10 @@ fn run() -> io::Result<()> {
                 match reader.read(&mut buf) {
                     Ok(0) => break,
                     Ok(n) => {
-                        if tx_north.send(StreamMessage::NorthData(buf[..n].to_vec())).is_err() {
+                        if tx_north
+                            .send(StreamMessage::NorthData(buf[..n].to_vec()))
+                            .is_err()
+                        {
                             break;
                         }
                     }

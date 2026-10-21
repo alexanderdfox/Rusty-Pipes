@@ -18,7 +18,7 @@
 //! conceptual transistor-pipe fitting.
 
 use std::env;
-use std::io::{self, Read, Write, BufReader, BufWriter};
+use std::io::{self, BufReader, BufWriter, Read, Write};
 use std::process;
 
 const DEFAULT_THRESHOLD: u8 = 1; // any non-zero base turns the transistor on
@@ -31,7 +31,7 @@ enum Mode {
 
 fn print_help() {
     eprintln!(
-r#"transistor — pipe that acts like a BJT transistor
+        r#"transistor — pipe that acts like a BJT transistor
 
 USAGE:
     ... | transistor [OPTIONS] | ...
