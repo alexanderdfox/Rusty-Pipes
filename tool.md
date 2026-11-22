@@ -1,4 +1,4 @@
-# Circuit – Analog Stages as Linux Pipes
+# tool.rs – Analog Stages as Linux Pipes
 
 A small Rust tool that turns classic analog circuit elements (ground, AC sources, capacitors, inductors) into pure Unix filters.  
 Each stage reads a stream of samples from **stdin** and writes the transformed stream to **stdout**, so you can compose complete signal paths with the real shell pipe operator `|`.
