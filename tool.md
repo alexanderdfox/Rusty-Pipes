@@ -31,7 +31,7 @@ Empty lines and malformed lines are ignored.
 ## Building
 
 ```bash
-rustc -O circuit.rs -o circuit
+rustc -O tool.rs -o circuit
 ```
 
 Or with Cargo:
